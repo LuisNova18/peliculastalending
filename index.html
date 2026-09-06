@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <img class="logo" src="/cinema.png" alt="" />
+
+        <!-- Creamos el boton del menu -->
+        <button class="menu-button">
+          <img
+            src="https://static.thenounproject.com/png/683452-200.png"
+            width="24px"
+            height="24px"
+            alt=""
+          />
+        </button>
+
+        <div class="nav-links">
+          <a href="#Inicio">Inicio</a>
+          <a href="#Peliculas"> Peliculas</a>
+          <a href="#Favoritos">Favoritos</a>
+          <a href="#Contactos">Contactos</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h2>Peliculas Destacadas</h2>
+        <hr />
+        <div id="destacadas-grid" class="movies-grid">
+
+        </div>
+        </p>
+        <button id="verMas">Ver mas ></button>
+      </section>
+
+      <section>
+        <form id="searchForm">
+          <label for="search">Buscar Peliculas</label>
+          <input id="search" type="text" placeholder="Escribe el nombre..." required/>
+          <button type="reset">Limpiar</button>
+          <button type="submit">Buscar</button>
+        </form>
+        <p class="formResult"></p>
+      </section>
+
+      <section>
+        <h2>Resultados</h2>
+        <hr />
+        <div id="resultados-grid" class="movies-grid">
+
+        </div>
+      </section>
+    </main>
+    <script src="index.js"></script>
+  </body>
+</html>
