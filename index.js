@@ -1,4 +1,4 @@
-// 1. Funcion para crear la tarjeta
+//////////////////////////////////////////////////// funcion para crear la tarjeta
 function crearTarjetaSerie(serie) {
   const tarjeta = document.createElement("div");
   tarjeta.classList.add("serieTarjetaClass");
@@ -8,31 +8,34 @@ function crearTarjetaSerie(serie) {
     <h3>${serie.titulo}</h3>
     <p>${serie.anio}</p>
     <p>${serie.rating}</p>
-  `;
-
+    <button class="btn-favorito" data-id="${serie.id}"> Favorito </button>
+    `;
   return tarjeta;
 }
+//////////////////////////////////////////////////// funcion para crear la tarjeta
 
-// 2. Función para cargar varias series
+/////////////////////////////////////////////////// funcion para cargar varias series
 async function cargarSeries(url, contenedor) {
   try {
-    const respuesta = await fetch(url);
-    const datos = await respuesta.json();
+    const respuesta = await fetch(url); // Solicitamos los datos a la url del api y esperamos
+    const datos = await respuesta.json(); // los datos que regresan lo guardamos en la varible "datos y le decimos que es un Json"
+      
+    contenedor.innerHTML = "";  // limpiamos el contenedor para que esta vacio al momento de agregarle los datos
 
-    // Limpiamos el contenedor
-    contenedor.innerHTML = "";
+     // el json que viene tiene muchas series y se almacenan en la variables de datos y con la instruccion de abajo solo tomamos tres
+    const seriesLimitadas = datos.slice(0, 3); 
 
-    const seriesLimitadas = datos.slice(0, 3);
-
-    // datos es un ARRAY. Cada elemento tiene { score, show }
-    seriesLimitadas.forEach(item => {
-      const serie = item.show; // ← Aquí está la información real de la serie
+    
+    seriesLimitadas.forEach(item => {  // recoremos el array al cual solo le dejamos tres series y almacenamoes esteas series en  item}
+      const serie = item.show; // las series vienen en un arreglo debajo de show por eso los tengo que iterar con item.show
 
       const serieFormateada = {
+        id: serie.id,
         titulo: serie.name,
-        anio: serie.premiered ? serie.premiered.slice(0, 4) : "N/A",
+        anio: serie.premiered ? serie.premiered.slice(0, 4) : "N/A", // con esto se le dice que si tiene el campo solo presente los primeros 4 de lo contrario coloque n/a
         rating: serie.rating?.average || "N/A",
-        poster: serie.image?.medium || "https://via.placeholder.com/210x295?text=Sin+imagen"
+        poster: serie.image.medium 
+      
       };
 
       const tarjeta = crearTarjetaSerie(serieFormateada);
@@ -44,14 +47,19 @@ async function cargarSeries(url, contenedor) {
   }
 }
 
-// 3. Seleccionar contenedores
+/////////////////////////////////////////////////// funcion para cargar varias series
+
+
+
+
+//  Seleccionar contenedores
 const destacadasGrid = document.querySelector("#destacadas-grid");
 const resultadosGrid = document.querySelector("#resultados-grid");
 
-// 4. Ejemplo: cargar series al iniciar (destacadas)
+// cargar series al iniciar (destacadas)
 cargarSeries("https://api.tvmaze.com/schedule?country=US", destacadasGrid);
 
-// 5. Cuando el usuario busque desde el formulario
+// Cuando el usuario busque desde el formulario
 const searchForm = document.querySelector("#searchForm");
 const searchInput = document.querySelector("#search");
 
