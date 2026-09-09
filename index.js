@@ -1,57 +1,73 @@
-console.log("Hola, js cargando");
+// 1. Funcion para crear la tarjeta
+function crearTarjetaSerie(serie) {
+  const tarjeta = document.createElement("div");
+  tarjeta.classList.add("serieTarjetaClass");
 
-// Creamos la variable links y la igualamos a .nav-links (Lo que estamos buscando)
-const links = document.querySelector(".nav-links");
-const button = document.querySelector(".menu-button");
+  tarjeta.innerHTML = `
+    <img src="${serie.poster}" alt="${serie.titulo}">
+    <h3>${serie.titulo}</h3>
+    <p>${serie.anio}</p>
+    <p>${serie.rating}</p>
+  `;
 
-// Escuchamos el evento click del boton
-button.addEventListener("click", () => {
-  // Cuerpo de la funcion
-  console.log("El boton fue presionado");
-  links.classList.toggle("open");
-});
+  return tarjeta;
+}
 
-// Declaramos las variables del texto a cambiar y el boton que lo cambia
-const message = document.querySelector("#message");
-const changeTextButton = document.querySelector("#changeTextButton");
+// 2. Función para cargar varias series
+async function cargarSeries(url, contenedor) {
+  try {
+    const respuesta = await fetch(url);
+    const datos = await respuesta.json();
 
-changeTextButton.addEventListener("click", () => {
-  message.textContent = "El texto ha sido actualizado";
-  console.log("El texto ha cambiado");
-});
+    // Limpiamos el contenedor
+    contenedor.innerHTML = "";
 
-const addItemButton = document.querySelector(".addItemButton");
-const list = document.querySelector(".list");
-let items = 1;
+    const seriesLimitadas = datos.slice(0, 3);
 
-addItemButton.addEventListener("click", () => {
-  // Creamos el elemento que no existe en la pagina
-  const item = document.createElement("li");
+    // datos es un ARRAY. Cada elemento tiene { score, show }
+    seriesLimitadas.forEach(item => {
+      const serie = item.show; // ← Aquí está la información real de la serie
 
-  // Configuramos con el texto, y lo que necesite
-  item.textContent = `Elemento de la lista numero ${items}`;
-  items++;
+      const serieFormateada = {
+        titulo: serie.name,
+        anio: serie.premiered ? serie.premiered.slice(0, 4) : "N/A",
+        rating: serie.rating?.average || "N/A",
+        poster: serie.image?.medium || "https://via.placeholder.com/210x295?text=Sin+imagen"
+      };
 
-  // Mostramos el elemento insertandolo en el DOM real
-  list.appendChild(item);
-});
+      const tarjeta = crearTarjetaSerie(serieFormateada);
+      contenedor.appendChild(tarjeta);
+    });
 
+  } catch (error) {
+    console.log("Error al cargar las series:", error);
+  }
+}
+
+// 3. Seleccionar contenedores
+const destacadasGrid = document.querySelector("#destacadas-grid");
+const resultadosGrid = document.querySelector("#resultados-grid");
+
+// 4. Ejemplo: cargar series al iniciar (destacadas)
+cargarSeries("https://api.tvmaze.com/schedule?country=US", destacadasGrid);
+
+// 5. Cuando el usuario busque desde el formulario
 const searchForm = document.querySelector("#searchForm");
-const search = document.querySelector("#search");
-const formResult = document.querySelector(".formResult");
+const searchInput = document.querySelector("#search");
 
 searchForm.addEventListener("submit", (e) => {
-  console.log("Entrando a preventDefault");
-  console.log(e);
   e.preventDefault();
 
-  if (search.value.trim() === "") {
-    formResult.textContent = "Debes escribir algo";
-  } else {
-    formResult.textContent = `Estoy buscando a ${search.value}`;
+  const texto = searchInput.value.trim();
+
+  if (texto === "") {
+    alert("Debes escribir el nombre de una serie");
+    return;
   }
+
+  const url = `https://api.tvmaze.com/search/shows?q=${texto}`;
+  cargarSeries(url, resultadosGrid);
 });
 
-function sendMessage() {
-  // Mensaje de contacto
-}
+
+
