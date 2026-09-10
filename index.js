@@ -25,7 +25,7 @@ async function cargarSeries(url, contenedor) {
     contenedor.innerHTML = "";  // limpiamos el contenedor para que esta vacio al momento de agregarle los datos
 
      // el json que viene tiene muchas series y se almacenan en la variables de datos y con la instruccion de abajo solo tomamos tres
-    const seriesLimitadas = datos.slice(0, 9); 
+    const seriesLimitadas = datos.slice(0, 3); 
     
     seriesLimitadas.forEach(item => {  // recoremos el array al cual solo le dejamos tres series y almacenamoes esteas series en  item}
       const serie = item.show; // las series vienen en un arreglo debajo de show por eso los tengo que iterar con item.show
