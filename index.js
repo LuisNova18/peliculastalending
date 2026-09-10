@@ -14,6 +14,9 @@ function crearTarjetaSerie(serie) {
 }
 //////////////////////////////////////////////////// funcion para crear la tarjeta
 
+
+
+
 /////////////////////////////////////////////////// funcion para cargar varias series
 async function cargarSeries(url, contenedor) {
   try {
@@ -24,11 +27,10 @@ async function cargarSeries(url, contenedor) {
 
      // el json que viene tiene muchas series y se almacenan en la variables de datos y con la instruccion de abajo solo tomamos tres
     const seriesLimitadas = datos.slice(0, 3); 
-
     
     seriesLimitadas.forEach(item => {  // recoremos el array al cual solo le dejamos tres series y almacenamoes esteas series en  item}
       const serie = item.show; // las series vienen en un arreglo debajo de show por eso los tengo que iterar con item.show
-
+// asociamos los datos de la serie formateada con los datos de la tarjeta, 
       const serieFormateada = {
         id: serie.id,
         titulo: serie.name,
@@ -47,9 +49,6 @@ async function cargarSeries(url, contenedor) {
   }
 }
 
-/////////////////////////////////////////////////// funcion para cargar varias series
-
-
 
 
 //  Seleccionar contenedores
@@ -63,19 +62,19 @@ cargarSeries("https://api.tvmaze.com/schedule?country=US", destacadasGrid);
 const searchForm = document.querySelector("#searchForm");
 const searchInput = document.querySelector("#search");
 
+// validamos que el input no este en blanco y setiamos la url de busqueda y le pasamos el valor del
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
-
   const texto = searchInput.value.trim();
-
   if (texto === "") {
     alert("Debes escribir el nombre de una serie");
     return;
   }
-
   const url = `https://api.tvmaze.com/search/shows?q=${texto}`;
   cargarSeries(url, resultadosGrid);
 });
 
+
+//////////////////// Guardar favoritos ////////////////////////////
 
 
