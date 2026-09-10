@@ -16,7 +16,6 @@ function crearTarjetaSerie(serie) {
 
 
 
-
 /////////////////////////////////////////////////// funcion para cargar varias series
 async function cargarSeries(url, contenedor) {
   try {
@@ -50,13 +49,12 @@ async function cargarSeries(url, contenedor) {
 }
 
 
-
 //  Seleccionar contenedores
 const destacadasGrid = document.querySelector("#destacadas-grid");
 const resultadosGrid = document.querySelector("#resultados-grid");
 
 // cargar series al iniciar (destacadas)
-cargarSeries("https://api.tvmaze.com/schedule", destacadasGrid);
+cargarSeries("https://api.tvmaze.com/schedule?country=US", destacadasGrid);
 
 // Cuando el usuario busque desde el formulario
 const searchForm = document.querySelector("#searchForm");
