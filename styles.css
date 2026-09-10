@@ -6,7 +6,7 @@
 
 body {
   font-family: "Segoe UI", system-ui, sans-serif;
-  background-color: burlywood;
+  background-color: rgb(234, 236, 240);
   color: #2b2b2b;
 }
 
@@ -16,7 +16,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 2rem;
-  background-color: brown;
+  background-color: rgb(11, 102, 206);
 }
 
 .logo {
@@ -72,7 +72,7 @@ main {
 }
 
 section {
-  background-color: white;
+  background-color: rgba(247, 242, 245, 0.932);
   border-radius: 14px;
   padding: 1.9rem;
   margin-bottom: 2rem;
@@ -112,7 +112,7 @@ button {
   font-size: 0.9rem;
   font-weight: 500;
   color: white;
-  background-color: brown;
+  background-color: rgb(11, 102, 206);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -130,11 +130,11 @@ button:active {
 }
 
 button[type="reset"] {
-  background-color: brown;
+  background-color: rgb(11, 102, 206);
   color: white;
 }
 
-/* ---- Lista dinámica ---- */
+
 .list {
   list-style: none;
   margin-top: 1rem;
@@ -148,7 +148,7 @@ button[type="reset"] {
   font-size: 0.9rem;
 }
 
-/* ---- Formulario ---- */
+
 #searchForm {
   display: flex;
   flex-wrap: wrap;
