@@ -1,7 +1,5 @@
 
-// 1. SELECCIONAR LOS ELEMENTOS DEL HTML
-
-
+/////////SELECCIONAR LOS ELEMENTOS DEL HTML
 const searchForm = document.querySelector("#searchForm");
 const searchInput = document.querySelector("#search");
 
@@ -9,89 +7,62 @@ const destacadasGrid = document.querySelector("#destacadas-grid");
 const resultadosGrid = document.querySelector("#resultados-grid");
 
 
-
-// 2. FUNCIÓN PARA CREAR UNA TARJETA
-
+/////////FUNCION PARA CREAR UNA TARJETA
 
 function crearTarjetaSerie(serie) {
+    
+    const tarjeta = document.createElement("div");  // Creamos un div
+    tarjeta.classList.add("serieTarjetaClass");   // Le agregamos la clase CSS que tenemos en el CSS
 
-    // Creamos un div
-    const tarjeta = document.createElement("div");
-
-    // Le agregamos una clase CSS
-    tarjeta.classList.add("serieTarjetaClass");
-
-    // Colocamos el contenido dentro del div
+    //Colocamos el contenido dentro del div
     tarjeta.innerHTML = `
         <img src="${serie.poster}" alt="${serie.titulo}">
-
         <h3>${serie.titulo}</h3>
-
         <p>Año: ${serie.anio}</p>
-
         <p>Rating: ${serie.rating}</p>
-
         <button class="btn-favorito" data-id="${serie.id}">
             ❤️ Favorito
         </button>
     `;
-
-    // Devolvemos la tarjeta
-    return tarjeta;
+  
+    return tarjeta;   // Devolvemos la tarjeta
 }
 
 
-// 3. FUNCIÓN PARA CARGAR SERIES DESDE LA API
+//////////FUNCION PARA CARGAR SERIES DESDE LA API
 
 
 async function cargarSeries(url, contenedor) {
 
     try {
-
-        // Hacemos la petición a la API
-        const respuesta = await fetch(url);
-
-        // Convertimos la respuesta a JSON
-        const datos = await respuesta.json();
-
-        // Limpiamos el contenedor
-        contenedor.innerHTML = "";
-
-        // Tomamos solamente las primeras 3 series
-        const seriesLimitadas = datos.slice(0, 3);
-
-        // Recorremos las series
-        seriesLimitadas.forEach((item) => {
-
-            // La información de la serie está dentro de "show"
-            const serie = item.show;
+        const respuesta = await fetch(url); // Hacemos la peticion a la API
+        const datos = await respuesta.json();  // Convertimos la respuesta a JSON      
+        contenedor.innerHTML = ""; // Limpiamos el contenedor
+        const seriesLimitadas = datos.slice(0, 3); // Tomamos solamente las primeras 3 series
+        seriesLimitadas.forEach((item) => {    // Recorremos las series
+            const serie = item.show; // La información de la serie está dentro de "show"
 
             // Creamos un objeto con solamente
             // los datos que necesitamos
             const serieFormateada = {
 
                 id: serie.id,
-
                 titulo: serie.name,
-
                 anio: serie.premiered
                     ? serie.premiered.slice(0, 4)
                     : "N/A",
-
                 rating: serie.rating && serie.rating.average
                     ? serie.rating.average
                     : "N/A",
-
                 poster: serie.image
                     ? serie.image.medium
                     : ""
             };
 
-            // Creamos la tarjeta
-            const tarjeta = crearTarjetaSerie(serieFormateada);
-
-            // Agregamos la tarjeta al contenedor
-            contenedor.appendChild(tarjeta);
+            
+            const tarjeta = crearTarjetaSerie(serieFormateada); // Creamos la tarjeta
+           
+            contenedor.appendChild(tarjeta); // Agregamos la tarjeta al contenedor
 
         });
 
@@ -104,31 +75,19 @@ async function cargarSeries(url, contenedor) {
 
 
 
-// 4. CARGAR SERIES DESTACADAS AL ABRIR LA PÁGINA
-
-
+//////////CARGAR SERIES DESTACADAS AL ABRIR LA PÁGINA
 const urlDestacadas =
     "https://api.tvmaze.com/schedule?country=US";
-
 cargarSeries(urlDestacadas, destacadasGrid);
 
 
-// 5. BUSCAR SERIES
-
-
+/////////BUSCAR SERIES
 searchForm.addEventListener("submit", async (e) => {
-
-    // Evita que el formulario recargue la página
-    e.preventDefault();
-
-    // Obtenemos lo que escribió el usuario
-    const texto = searchInput.value.trim();
-
+     e.preventDefault();
+     const texto = searchInput.value.trim();  // Obtenemos lo que escribió el usuario
     // Validamos que no esté vacío
     if (texto === "") {
-
         alert("Debes escribir el nombre de una serie");
-
         return;
     }
 
@@ -143,22 +102,17 @@ searchForm.addEventListener("submit", async (e) => {
 
 
 
-// 6. GUARDAR Y QUITAR FAVORITOS
-
-
+/////////GUARDAR Y QUITAR FAVORITOS
 document.addEventListener("click", (e) => {
-
-    // Verificamos si hicieron clic en un botón favorito
-    if (!e.target.classList.contains("btn-favorito")) {
+  
+    if (!e.target.classList.contains("btn-favorito")) {   // Verificamos si hicieron clic en un boton favorito
 
         return;
     }
-
-    // Obtenemos el ID de la serie
-    const id = e.target.dataset.id;
-
-    // Obtenemos los favoritos guardados
-    const guardado = localStorage.getItem("favoritos");
+   
+    const id = e.target.dataset.id; // Obtenemos el ID de la serie
+   
+    const guardado = localStorage.getItem("favoritos"); // Obtenemos los favoritos guardados
 
     // Si existen favoritos, los convertimos de JSON a array
     // Si no existen, comenzamos con un array vacío
@@ -166,32 +120,26 @@ document.addEventListener("click", (e) => {
         ? JSON.parse(guardado)
         : [];
 
-
-
     // ¿LA SERIE YA ES FAVORITA?
 
-
     if (favoritos.includes(id)) {
-
-        // Si ya estaba, la eliminamos
-        favoritos = favoritos.filter((favorito) => {
+       
+        favoritos = favoritos.filter((favorito) => {      // Si ya estaba, la eliminamos
 
             return favorito !== id;
 
         });
 
-        // Cambiamos el texto del botón
-        e.target.textContent = "❤️ Favorito";
-
+        
+        e.target.textContent = "❤️ Favorito";  // Cambiamos el texto del boton
     } else {
 
-        // Si no estaba, la agregamos
-        favoritos.push(id);
+      
+        favoritos.push(id);    // Si no estaba, la agregamos
 
-        // Cambiamos el texto del botón
+        // Cambiamos el texto del boton
         e.target.textContent = "✅ En Favoritos";
     }
-
 
     // Guardamos nuevamente los favoritos
     localStorage.setItem(
